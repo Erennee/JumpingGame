@@ -9,15 +9,39 @@ This is a Jumping Game built with Java [Processing](https://processing.org/downl
 ## Parameters 
 Change difficulty
 ```java
-float startDiffculuty = 1;
+final float startDiffculuty = 1;
 ```
 Change difficulty scale
 ```java
-float startDiffculuty = 1;
+final float diffculutyScale = 1;
 ```
-Change Speed
+Change speed
 ```java
-int speedScale = 100;
+final int speedScale = 100;
+```
+Change player position x
+```java
+final float playerX = 50;
+```
+
+Change player scale
+```java
+final float playerScale = 30;
+```
+
+Change player jump height (it effects enemy height)
+```java
+final float jumpHeight = 100;
+```
+
+Change difference between the jump height and enemy max height
+```java
+final float jumpDifference = 30;
+```
+
+Change difference between the enemy max height and enemy min height
+```java
+final float enemyMaxHeightDifference = 30;
 ```
 
 ## Maintainers
