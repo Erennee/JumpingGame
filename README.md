@@ -19,17 +19,15 @@ Change speed
 ```java
 final int speedScale = 100;
 ```
-Change player position x
+Change player position in X axis
 ```java
 final float playerX = 50;
 ```
-
 Change player scale
 ```java
 final float playerScale = 30;
 ```
-
-Change player jump height (it effects enemy height)
+Change player jump height (it effects enemy height too)
 ```java
 final float jumpHeight = 100;
 ```
@@ -47,6 +45,9 @@ final float enemyMaxHeightDifference = 30;
 ## Maintainers
 This project is mantained by:
 *  [Eren Erdogan](https://github.com/erennee)
+
+## Contributions
+*  [Brock Taban](https://github.com/brocktaban)
 
 ## Contributing
 
