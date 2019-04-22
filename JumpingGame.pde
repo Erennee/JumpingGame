@@ -10,7 +10,8 @@ int lastDiffculutyChangedScore = 0;
 boolean diffculutyChanged = false;
 float diffculuty=startDiffculuty;
 float gravity = 9.8*50*diffculuty;
-float speed = 100*diffculuty;
+int speedScale = 100; 
+float speed = speedScale*diffculuty;
 
 Player player;
 
