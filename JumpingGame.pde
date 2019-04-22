@@ -1,27 +1,30 @@
+final float startDiffculuty=1;
+final float diffculutyScale=0.3;
+final int speedScale = 100;
+final float playerX=50;
+final float playerScale=30;
+final float jumpHeight=100;
+final float jumpDifference=30;
+final float enemyMaxHeightDifference=30;
+
 Background background;
 
 float tic=0;
 float lastTime = 0;
-float startDiffculuty=1;
-float diffculutySize=0.3;
 int diffculutyCount=0;
 int everyDiffculutyIncreaseScore=5;
 int lastDiffculutyChangedScore = 0;
 boolean diffculutyChanged = false;
 float diffculuty=startDiffculuty;
-float gravity = 9.8*50*diffculuty;
-float speed = 100*diffculuty;
+float gravity = 9.8*50*diffculuty; 
+float speed = speedScale*diffculuty;
 
 Player player;
 
-float playerX=50;
 float playerStartPosY;
-float playerScale=30;
 
 boolean isJumping = false;
 
-float jumpHeight=100;
-float jumpDifference=30;
 float jumpTimer;
 
 float maxHeightTime = sqrt(2f*jumpHeight / gravity);
@@ -29,7 +32,6 @@ float firstVelocity = gravity * maxHeightTime;
 
 ArrayList<Enemy> eList = new ArrayList<Enemy>();
 
-float enemyMaxHeightDifference=30;
 float enemyMinCooldown = 3/diffculuty;
 float enemyMaxCooldown= 10/diffculuty;
 float enemyTimer = 0;
@@ -73,7 +75,7 @@ void draw(){
   
   if(((int)score)%everyDiffculutyIncreaseScore == 0 && lastDiffculutyChangedScore < (int)score){
     diffculutyCount++;
-    everyDiffculutyIncreaseScore +=  (int)(diffculutySize*10);
+    everyDiffculutyIncreaseScore +=  (int)(diffculutyScale*10);
     lastDiffculutyChangedScore = (int)score+everyDiffculutyIncreaseScore-1;
     diffculutyChanged = true;
   }
@@ -117,7 +119,7 @@ void restartGame(){
 }
 
 void changeDiffculuty(){
-  diffculuty = startDiffculuty + diffculutySize*diffculutyCount;  
+  diffculuty = startDiffculuty + diffculutyScale*diffculutyCount;  
   speed = 100*diffculuty;
   enemyMinCooldown = 2/diffculuty;
   enemyMaxCooldown= 5/diffculuty;
