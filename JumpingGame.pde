@@ -37,16 +37,21 @@ float enemyMaxCooldown= 10/diffculuty;
 float enemyTimer = 0;
 
 float score=0;
+String highScores="";
 Text scoreText;
+Text topText;
 Text restartText;
 
 boolean stopGame=false;
+
+TopList topList = new TopList();
 
 void setup(){
   size(800,300);
   
   background=new Background(50*height/300,#67A7FF,#E8EAED);
   
+  topText = new Text(width-10,10,10,0);
   scoreText = new Text(width/2,(height-background.floorHeight)/3,25,0);
   restartText = new Text(width/2,(height-background.floorHeight)/3+30,25,0);
   playerStartPosY = height-background.floorHeight/2-playerScale;
@@ -63,7 +68,8 @@ void draw(){
   moveEnemies();
   
   player.display();
-  scoreText.display(str((int)score));
+  scoreText.display(str((int)score),0);
+  topText.display(highScores,1);
   if(isJumping){
     jumpTimer += tic;
     jump(jumpTimer);
@@ -86,7 +92,7 @@ void draw(){
   
   if(!stopGame)tic = timeDifference();
   else {
-    restartText.display("Game over");
+    restartText.display("Game over",0);
     tic = 0;
     lastTime = millis();
   }
@@ -105,6 +111,9 @@ void mousePressed(){
 }
 
 void restartGame(){
+  
+  topList.tryToAddScore("player",(int)score);
+  highScores = topList.getText();
   diffculutyCount = 0;
   everyDiffculutyIncreaseScore=5;
   changeDiffculuty();
