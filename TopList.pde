@@ -1,8 +1,11 @@
 class TopList{
+  int len = 0;
+  int size = 0;
   
-  int firstLen=0;
-  int secondLen=0;
-  int thirdLen=0;
+  int minLen;
+  int maxLen;
+  
+  int scoreFlowLimit;
   
  class Node{
    String player;
@@ -21,53 +24,48 @@ class TopList{
  
  Node first;
   
-  public TopList(){
+  public TopList(int minLen,int maxLen,int scoreFlowLimit){
+    this.minLen = minLen;
+    this.maxLen = maxLen;
+    this.scoreFlowLimit = scoreFlowLimit;
     first = null;
   }
   
-  public boolean tryToAddScore(String player,int score){
-    if(first == null){
-      first = new Node(player,score);
-      firstLen++;
-    }else if(score > first.score){
-      Node newFirst = new Node(player,score);
-      if(first.next != null)first.next.next = null;
-      newFirst.next = first;
-      first = newFirst;
-      thirdLen=secondLen;
-      secondLen=firstLen;
-      firstLen=1;
-    }else if(score == first.score){
-      first = addSameScore(first,new Node(player,score));
-      firstLen++;
-    }else if(first.next == null){
-      first.next = new Node(player,score);
-      secondLen++;
-    }else if(score > first.next.score){
-      Node newSecond = new Node(player,score);
-      first.next.next = null;
-      newSecond.next = first.next;
-      first.next = newSecond;
-      thirdLen=secondLen;
-      secondLen=1;
-    }else if(score == first.next.score){
-      first.next = addSameScore(first.next,new Node(player,score));
-      secondLen++;
-    }else if(first.next.next == null){
-      first.next.next = new Node(player,score);
-      thirdLen++;
-    }else if(score > first.next.next.score){
-      Node newThird = new Node(player,score);
-      first.next.next = newThird;
-      thirdLen=1;
-    }else if(score == first.next.next.score){
-      first.next.next = addSameScore(first.next.next,new Node(player,score));
-      thirdLen++;
-    }else{
-    return false;
+  public void tryToAddScore(String player,int score){
+    
+    first = AddScore(first,player,score,0);
+    
+    if(len>minLen){
+      Node limited = getNode(first,minLen);
+      int minScore = limited.score-scoreFlowLimit;
+      limited = limitTopLen(limited,minLen,minScore);
+      first = setNode(first,minLen,limited);
     }
     
-    return true;
+    len = 0;
+    size = 0;
+    
+    checkLen(first);
+    checkSize(first);
+     
+  }
+  
+  Node AddScore(Node curr,String player,int score,int len){
+    if(curr == null){
+     curr = new Node(player,score);
+     return curr;
+    }
+    if(curr.score < score){
+      Node newCurr = new Node(player,score);
+      newCurr.next = curr;
+      return newCurr;
+    }else if(curr.score == score){
+      curr = addSameScore(curr,new Node(player,score));
+      return curr;
+    }else{
+      curr.next = AddScore(curr.next,player,score,len+1);
+      return curr;
+    }
   }
   
   Node addSameScore(Node pos,Node same){
@@ -79,36 +77,65 @@ class TopList{
      return pos;
   }
   
+  Node limitTopLen(Node curr,int len,int minScore){
+        if(len<maxLen && curr.score>=minScore){
+          curr.next = limitTopLen(curr.next,len+1,minScore);
+          return curr;
+        }
+        return null;
+  }
+  
+  Node getNode(Node curr,int pos){
+    if(pos>0){
+     return  getNode(curr.next,pos-1);
+    }
+    return curr;
+  }
+  
+  Node setNode(Node curr,int pos,Node newOne){
+      if(pos>0){
+         curr.next = setNode(curr.next,pos-1,newOne);
+         return curr;
+      }else{
+        
+       return newOne; 
+      }
+  }
+  
+  void checkSize(Node curr){
+     if(curr != null){
+        size++;
+        checkSize(curr.same);
+        checkSize(curr.next);
+     }
+  }
+  
+  void checkLen(Node curr){
+     if(curr != null){
+        len++;
+        checkLen(curr.next);
+     }
+  }
+  
  public String[] getTextArray(){
-   String[] scoreText = new String[firstLen+secondLen+thirdLen];
+   String[] scoreText = new String[size];
    int i=0;
    Node check = first;
-   
-   while(check != null){
-     scoreText[i] ="#1 " + str(check.score) + "  -  " + check.player;
+   Node pos = first;
+   int p = 1;
+   while(pos != null){
+     scoreText[i] ="#"+p+" " + str(check.score) + "  -  " + check.player;
      check = check.same;
-     i++;
-   }
-   
-   check = first.next;
-   
-   while(check != null){
-     scoreText[i] ="#2 " + str(check.score) + "  -  " + check.player;
-     check = check.same;
-     i++;
-   }
-   
-   if(first.next != null){
-     check = first.next.next;
-     
-     while(check != null){
-       scoreText[i] ="#3 " + str(check.score) + "  -  " + check.player;
-       check = check.same;
-       i++;
+     if(check == null){
+       pos = pos.next;
+       check = pos;
+       p++;
      }
+     i++;
    }
    return scoreText;
  }
+ 
  public String getText(){
    String[] textArray = getTextArray();
    String text=textArray[0];

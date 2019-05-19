@@ -44,7 +44,7 @@ Text restartText;
 
 boolean stopGame=false;
 
-TopList topList = new TopList();
+TopList topList = new TopList(2,4,1);
 
 void setup(){
   size(800,300);
@@ -129,7 +129,7 @@ void restartGame(){
 
 void changeDiffculuty(){
   diffculuty = startDiffculuty + diffculutyScale*diffculutyCount;  
-  speed = 100*diffculuty;
+  speed = speedScale*diffculuty;
   enemyMinCooldown = 2/diffculuty;
   enemyMaxCooldown= 5/diffculuty;
   gravity = 9.8*20*diffculuty;
